@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Equipment</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+    <style>
+        #menu a:hover,
+        #menu a.active{
+            color: white;
+            /* background:white; */
+            background: #1D271A;
+            /* border-right: 2px solid rgb(96, 122, 138); */
+            width: auto;
+        }
+        .bi {
+        vertical-align: -.125em;
+        fill: currentColor;
+      }
+
+      #sidebar{
+        background-color: #223226;
+      }
+
+      #bg-navbar,
+      #bg-navbar a{
+        background-color: #960017;
+        color: white;
+      }
+
+      #sidebar-title,
+      #sidebar-title a
+      {
+        background: #7D000F;
+        /* margin: -10px; */
+        width: 100%;
+        text-align: center;
+        word-wrap:break-word;
+        display: block;
+        white-space: normal;
+        color: white;
+      }
+      hr {
+        width: 80%; 
+        margin-right: auto;
+        margin-left: auto;
+        color: whitesmoke; 
+        height: 1px; 
+        background-color:whitesmoke; 
+      }
+    </style>
+    
+</head>
+<body>
+    {% include "sidebarEquipment.html" %}
+          <!-- content area! -->
+          <div class="col px-0 bg-light">
+
+            <!-- <nav class="navbar sticky-top navbar-light" id="bg-navbar">
+              <div class="container-fluid">
+                <a class="navbar-brand" href="#">{% now "Y-m-d" %} Hello {{ user.email }}</a>
+              </div>
+            </nav> -->
+            {% include "navbar.html" %}
+
+            <h3 class="p-3 bg-white">
+                EQUIPMENT <br>
+                <small class="text-muted">Management of Equipment</small>
+            </h3>
+
+            <h4 class="p-3">
+                Add New Equipment
+            </h4>
+
+            {% if messages %}
+                <div class="container">
+                <hr>
+                {% for msg in messages %}
+                <div class="alert alert-warning" role="alert">
+                  {{msg}}
+                </div>
+                <!-- <b>{{msg}}</b> -->
+                {% endfor %}
+                </div>
+                <hr>
+            {% endif %}
+
+            <div class="container p-3 bg-white">
+                <form method="POST" action="{% url 'equipment:addEquipment' %}" enctype="multipart/form-data">
+                  {% csrf_token %}
+                    <div class="mb-3 row">
+                        <label for="name" class="col-sm-2 col-form-label">Name*</label>
+                        <div class="col-sm-10">
+                          <input type="text" class="form-control" id="name" name="name" required>
+                        </div>
+                      </div>
+                    <div class="mb-3 row">
+                        <label for="serialID" class="col-sm-2 col-form-label">Serial ID</label>
+                        <div class="col-sm-10">
+                          <input type="text"  class="form-control" id="serialID" name="serialID">
+                        </div>
+                      </div>
+                      <div class="mb-3 row">
+                        <label for="status" class="col-sm-2 col-form-label">Status*</label>
+                        <div class="col-sm-10">
+                            <select name="status" id="status" class="form-select" aria-label="Default select example">
+                                <option selected value="ACTIVE">Active</option>
+                                <option value="INACTIVE">Inactive</option>
+                              </select>
+                        </div>
+                      </div>
+                      <div class="mb-3 row">
+                        <label for="location" class="col-sm-2 col-form-label">Location*</label>
+                        <div class="col-sm-10">
+                          <input type="text"  class="form-control" id="location" name="location" placeholder="Store, etc..." required>
+                        </div>
+                      </div>
+                      <div class="mb-3 row">
+                        <label for="make" class="col-sm-2 col-form-label">Make</label>
+                        <div class="col">
+                          <input type="text" class="form-control" placeholder="Hitachi, Sunflower, ..." aria-label="make" id="make" name="make">
+                        </div>
+                        <label for="model" class="col-sm-2 col-form-label">Model</label>
+                        <div class="col">
+                          <input type="text" class="form-control" aria-label="model" id="model" name="model">
+                        </div>
+                      </div>
+                      <div class="mb-3 row">
+                        <label for="acquiredDate" class="col-sm-2 col-form-label">Acquired Date</label>
+                        <div class="col">
+                          <input type="date" class="form-control" id="acquiredDate" name="acquiredDate">
+                        </div>
+                        <label for="purchasedFrom" class="col-sm-2 col-form-label">Purchased From</label>
+                        <div class="col">
+                          <input type="text" class="form-control" id="purchasedFrom" name="purchasedFrom">
+                        </div>
+                      </div>
+                      <div class="mb-3 row">
+                        <label for="yearMade" class="col-sm-2 col-form-label">Year Made</label>
+                        <div class="col">
+                          <input type="text" class="form-control" id="yearMade" name="yearMade" >
+                        </div>
+                        <label for="lastMaintenance" class="col-sm-2 col-form-label">Last Maintenance</label>
+                        <div class="col">
+                          <input type="date" class="form-control" id="lastMaintenance" name="lastMaintenance">
+                        </div>
+                      </div>
+
+                      <div class="mb-3 row">
+                        <label for="color" class="col-sm-2 col-form-label">Color</label>
+                        <div class="col">
+                          <input type="text" class="form-control" id="color" name="color">
+                        </div>
+                        <label for="price" class="col-sm-2 col-form-label">Price (RM)</label>
+                        <div class="col">
+                          <input type="number" class="form-control" id="price" name="price">
+                        </div>
+                      </div>
+                      <div class="mb-3">
+                        <label for="notes" class="form-label">Notes</label>
+                        <textarea class="form-control" id="notes" rows="3"></textarea>
+                      </div>
+                      <div class="mb-3">
+                        <label for="imgupload" class="form-label">Image</label>
+                        <input class="form-control" type="file" id="imgupload" name="imgupload">
+                      </div>
+                    
+                      <div class="col-12">
+                        <button type="submit" class="btn btn-success">Create</button>
+                      </div>
+                </form>
+            </div>
+              
+          </div>
+
+          
+
+
+        </div>
+      </div>
+    
+</body>
+</html>

@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Sale Ticket</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+        #menu a:hover,
+        #menu a.active{
+            color: white;
+            /* background:white; */
+            background: #1D271A;
+            /* border-right: 2px solid rgb(96, 122, 138); */
+            width: auto;
+        }
+        .bi {
+        vertical-align: -.125em;
+        fill: currentColor;
+      }
+
+      #sidebar{
+        background-color: #223226;
+      }
+
+      #bg-navbar,
+      #bg-navbar a{
+        background-color: #960017;
+        color: white;
+      }
+
+      #sidebar-title,
+      #sidebar-title a
+      {
+        background: #7D000F;
+        /* margin: -10px; */
+        width: 100%;
+        text-align: center;
+        word-wrap:break-word;
+        display: block;
+        white-space: normal;
+        color: white;
+      }
+      hr {
+        width: 80%; 
+        margin-right: auto;
+        margin-left: auto;
+        color: whitesmoke; 
+        height: 1px; 
+        background-color:whitesmoke; 
+      }
+    </style>
+    
+</head>
+<body>
+    {% include "sidebarFinancial.html" %}
+          <!-- content area! -->
+          <div class="col px-0 bg-light">
+
+            <!-- <nav class="navbar sticky-top navbar-light" id="bg-navbar">
+              <div class="container-fluid">
+                <a class="navbar-brand" href="#">{% now "Y-m-d" %} Hello {{ user.email }}</a>
+              </div>
+            </nav> -->
+            {% include "navbar.html" %}
+
+            <h3 class="p-3 bg-white">
+                FINANCIAL <br>
+                <small class="text-muted">Management of Sale Ticket</small>
+            </h3>
+
+            <h4 class="p-3">
+                Add New Sale Ticket
+            </h4>
+
+            <div class="container p-2">
+              <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="{% url 'financial:mainFinancial' %}">Main Financial</a></li>
+                  <li class="breadcrumb-item"><a href="{% url 'financial:mainSaleTicket' %}">Main Sale Ticket</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">Add Sale Ticket</li>
+                </ol>
+              </nav>
+            </div>
+
+            {% if messages %}
+                <div class="container">
+                <hr>
+                {% for msg in messages %}
+                <!-- <b>{{msg}}</b> -->
+                  <div class="alert alert-success" role="alert">
+                    {{msg}}
+                  </div>          
+                {% endfor %}
+                </div>
+                <hr>
+            {% endif %}
+
+            <div class="container p-3 bg-white">
+                <form method="POST" action="{% url 'financial:addSaleTicket' %}" enctype="multipart/form-data">
+                  {% csrf_token %}
+                    <div class="mb-3 row">
+                        <label for="invoice" class="col-sm-2 col-form-label">Invoice*</label>
+                        <div class="col-sm-10">
+                          <input type="text" class="form-control" id="invoice" name="invoice" required>
+                        </div>
+                      </div>
+                    <div class="mb-3 row">
+                        <label for="customer" class="col-sm-2 col-form-label">Customer</label>
+                        <div class="col-sm-10">
+                          <input type="text"  class="form-control" id="customer" name="customer" required>
+                        </div>
+                      </div>
+                      <div class="mb-3 row">
+                        <label for="saleDate" class="col-sm-2 col-form-label">Sale Date*</label>
+                        <div class="col">
+                          <input type="date" class="form-control" id="saleDate" name="saleDate" required>
+                        </div>
+                      </div>
+                      <div class="mb-3">
+                        <label for="remarks" class="form-label">Remarks</label>
+                        <textarea class="form-control" id="remarks" name='remarks' rows="3"></textarea>
+                      </div>
+                      <div class="mb-3">
+                        <label for="fileupload" class="form-label">Attachment</label>
+                        <input class="form-control" type="file" id="fileupload" name="fileupload">
+                      </div>
+
+                      <h3 class="text-muted">Animal Sale Details</h3>
+
+                      <nav class="container p-2">
+                        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                          <button class="nav-link active" id="nav-filter-tab" data-bs-toggle="tab" data-bs-target="#nav-filter" type="button" role="tab" aria-controls="nav-filter" aria-selected="true">Filter</button>
+                        </div>
+                      </nav>
+
+                      <!-- <form action="" method="get" id="formID">
+                        <input type="text" name="searchKey" id="searchKey" placeholder="Enter your search key">
+                        <input class="btn btn-outline-success" type="submit" id="searchButton" value="search">
+                      </form> -->
+
+                      <div class="tab-content" id="nav-tabContent">
+                        <div class="tab-pane fade show active container" id="nav-filter" role="tabpanel" aria-labelledby="nav-filter-tab" tabindex="0">
+                            <nav class="navbar bg-light">
+                              <div class="container-fluid">
+                                <!-- <form class="d-flex" role="search" id="formID"> -->
+                                  <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="searchKey" name="searchKey">
+                                  <button class="btn btn-outline-success" type="button" id="searchButton">Search</button>
+                                <!-- </form> -->
+                              </div>
+                            </nav>
+                            <div class="container">
+                              <button class="btn btn-secondary" id="clearTable">
+                                Clear the table result
+                            </button>
+                              <table id="searchTable" class="table table-primary table-hover">
+                              </table>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade container p-2" id="nav-search" role="tabpanel" aria-labelledby="nav-search-tab" tabindex="0">
+                          ...
+                        </div>
+                        
+                      </div>
+
+                      <h5>List of Animals</h5>
+                      <p id="animalSelectedCount"></p>
+
+                      <div class="container p-3">
+                        <table class="table table-striped table-hover">
+                          <thead>
+                            <tr>
+                              <th scope="col">#</th>
+                              <th scope="col">TAG ID</th>
+                              <th scope="col">ANIMAL</th>
+                              <th scope="col">TYPE</th>
+                              <th scope="col">BIRTH DATE</th>
+                              <th scope="col">STATUS</th>
+                            </tr>
+                          </thead>
+                          <tbody class="table-group-divider">
+                            {% for activeCattle in activeCattle %}
+                            <tr>
+                              <!-- <th scope="row">{{ forloop.counter }}</th> -->
+                              <th scope="row">
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" value="{{activeCattle.id}}" id="cattle-{{activeCattle.id}}" onchange="animalCheck()" name="SelectedCattle">
+                                  <label class="form-check-label" for="flexCheckDefault">
+                                    <!-- Default checkbox -->
+                                  </label>
+                                </div>
+                              </th>
+                              <td>{{activeCattle.cattleTagID}}</td>
+                              <td>Cattle</td>
+                              <td>{{activeCattle.cattleType}}</td>
+                              <td>{{activeCattle.cattleBirthDate|default_if_none:''}}</td>
+                              <td>{{activeCattle.cattleStatus}}</td>
+                            </tr>
+                            {% endfor %}
+                            {% for activeSheep in activeSheep %}
+                            <tr>
+                              <!-- <th scope="row">{{ forloop.counter }}</th> -->
+                              <th scope="row">
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" value="{{activeSheep.id}}" id="sheep-{{activeSheep.id}}" onchange="animalCheck()" name="SelectedSheep">
+                                  <label class="form-check-label" for="flexCheckDefault">
+                                    <!-- Default checkbox -->
+                                  </label>
+                                </div>
+                              </th>
+                              <td>{{activeSheep.sheepTagID}}</td>
+                              <td>Sheep</td>
+                              <td>{{activeSheep.sheepType}}</td>
+                              <td>{{activeSheep.sheepBirthDate|default_if_none:''}}</td>
+                              <td>{{activeSheep.sheepStatus}}</td>
+                            </tr>
+                            {% endfor %}
+                          </tbody>
+                        </table>
+                      </div>
+                    
+                      <div class="col-12">
+                        <button type="submit" class="btn btn-success">Create</button>
+                      </div>
+                </form>
+            </div>
+              
+          </div>
+
+          
+
+
+        </div>
+      </div>
+    
+</body>
+
+<script>
+  var i=0;
+  var headertable='';
+      // if(i==0){
+        headertable += "<thead><tr><th>No.</th>";
+          headertable += "<th>Tag ID</th>";
+          headertable += "<th>Type</th>";
+          headertable += "<th>Status</th>";
+          headertable += "<th>Status</th></tr></thead>";
+      // }
+  var count=0;
+  document.getElementById("animalSelectedCount").innerHTML = "0 animals selected";    
+
+  document.getElementById("searchTable").insertAdjacentHTML('afterbegin',headertable);
+  document.getElementById("searchButton").addEventListener('click',function(e){
+    e.preventDefault();
+    // alert("clicked");
+
+    // to clear the table content
+    // $('#searchTable tbody').empty();
+    clearTableContent();
+
+    const formData = new FormData($('#formID')[0]);
+    var searchKeyData = document.getElementById('searchKey').value;
+    // alert(searchKeyData);
+    var endpoint = "{% url 'financial:searchAnimalForSaleTicket' key=0  %}";
+    var patch = "{% url 'financial:searchAnimalForSaleTicket' key=0  %}".replace('0',searchKeyData);
+    // alert(endpoint);
+    // alert(patch);
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET',patch,true);
+    xhr.onload = () => {
+      // alert('inside');
+      var items=JSON.parse(xhr.response);
+      var item=items.resultCattle;
+      // alert(items.resultCattle.length);
+      // alert(items.resultSheep.length);
+      var contenttable='';
+      //   contenttable += "<tr><th>No.</th>";
+      // contenttable += "<th>Item ID</th>";
+      // contenttable += "<th>Description</th>";
+      // contenttable += "<th>Category</th>";
+      // contenttable += "<th>Start Price (RM)</th>";
+      
+      for(let i=0; i<items.resultCattle.length; i++){
+            
+            // contenttable += "<tbody><tr><td>" + (++count) + "</td>";
+            contenttable += "<tbody><tr><td><div class='form-check'><input onclick='onToggleCattle(\""+ items.resultCattle[i].id +"\")' onchange='animalCheck()' class='form-check-input' type='checkbox' value='"+ items.resultCattle[i].id +"' id='selectedCattleForSold"+ items.resultCattle[i].id +"'><label class='form-check-label' for='selectedCattleForSold"+ items.resultCattle[i].id +"'></label></div></td>";
+            contenttable += "<td>" + items.resultCattle[i].cattleTagID + "</td>";
+            contenttable += "<td>" + items.resultCattle[i].cattleType + "</td>";
+            contenttable += "<td>" + items.resultCattle[i].cattleStatus + "</td>";
+            contenttable += "<td>" + items.resultCattle[i].cattleStatus + "</td></tr>";
+        }
+        for(let i=0; i<items.resultSheep.length; i++){
+            
+            // contenttable += "<tr><td>" + (++count) + "</td>";
+            contenttable += "<tr><td><div class='form-check'><input onclick='onToggleSheep(\""+ items.resultSheep[i].id +"\")' onchange='animalCheck()' class='form-check-input' type='checkbox' value='"+ items.resultSheep[i].id +"' id='selectedSheepForSold"+ items.resultSheep[i].id +"'><label class='form-check-label' for='selectedSheepForSold"+ items.resultSheep[i].id +"'></label></div></td>";
+            contenttable += "<td>" + items.resultSheep[i].sheepTagID + "</td>";
+            contenttable += "<td>" + items.resultSheep[i].sheepType + "</td>";
+            contenttable += "<td>" + items.resultSheep[i].sheepStatus + "</td>";
+            contenttable += "<td>" + items.resultSheep[i].sheepStatus + "</td></tr></tbody>";
+        }
+        // document.getElementById("searchTable").remove();
+        document.getElementById("searchTable").insertAdjacentHTML("beforeend",contenttable);
+
+        
+        document.getElementById("searchTable").setAttribute('border','1');
+    };
+        
+    // xhr.send(JSON.stringify({
+    //   searchKey:searchKeyData
+    // }));
+    xhr.send();
+    // alert('outside');
+    i++;
+  });
+
+  $('#clearTable').click(function (event) {
+            event.preventDefault();
+            // $('#searchTable').html("");
+            $('#searchTable tbody').empty();
+
+        });
+
+  function clearTableContent(){
+    count=0;
+    $('#searchTable tbody').empty();
+  }
+
+  function animalCheck() {
+  // let total = document.querySelectorAll('input[type="checkbox"]:checked').length;
+  let totalCattle = document.querySelectorAll('input[type="checkbox"][name="SelectedCattle"]:checked').length;
+  let totalSheep = document.querySelectorAll('input[type="checkbox"][name="SelectedSheep"]:checked').length;
+  let total=totalCattle+totalSheep;
+  document.getElementById("animalSelectedCount").innerHTML = total + " animals selected";
+}
+
+function onToggleCattle(id){
+  if(document.getElementById("selectedCattleForSold"+id).checked){
+        document.getElementById("cattle-"+id).checked = true;
+      }
+      else{
+        document.getElementById("cattle-"+id).checked = false;
+      }
+
+      // document.getElementById("cattle-"+id).checked = true
+}
+
+function onToggleSheep(id){
+
+      if(document.getElementById("selectedSheepForSold"+id).checked){
+        document.getElementById("sheep-"+id).checked = true;
+      }
+      else{
+        document.getElementById("sheep-"+id).checked = false;
+      }
+
+
+      // document.getElementById("sheep-"+id).checked = true
+}
+
+
+</script>
+
+</html>

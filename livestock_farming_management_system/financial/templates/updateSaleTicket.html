@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Sale Ticket</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+        #menu a:hover,
+        #menu a.active{
+            color: white;
+            /* background:white; */
+            background: #1D271A;
+            /* border-right: 2px solid rgb(96, 122, 138); */
+            width: auto;
+        }
+        .bi {
+        vertical-align: -.125em;
+        fill: currentColor;
+      }
+
+      #sidebar{
+        background-color: #223226;
+      }
+
+      #bg-navbar,
+      #bg-navbar a{
+        background-color: #960017;
+        color: white;
+      }
+
+      #sidebar-title,
+      #sidebar-title a
+      {
+        background: #7D000F;
+        /* margin: -10px; */
+        width: 100%;
+        text-align: center;
+        word-wrap:break-word;
+        display: block;
+        white-space: normal;
+        color: white;
+      }
+      hr {
+        width: 80%; 
+        margin-right: auto;
+        margin-left: auto;
+        color: whitesmoke; 
+        height: 1px; 
+        background-color:whitesmoke; 
+      }
+    </style>
+    
+</head>
+<body>
+    {% include "sidebarFinancial.html" %}
+          <!-- content area! -->
+          <div class="col px-0 bg-light">
+
+            <!-- <nav class="navbar sticky-top navbar-light" id="bg-navbar">
+              <div class="container-fluid">
+                <a class="navbar-brand" href="#">{% now "Y-m-d" %} Hello {{ user.email }}</a>
+              </div>
+            </nav> -->
+            {% include "navbar.html" %}
+
+            <h3 class="p-3 bg-white">
+                FINANCIAL <br>
+                <small class="text-muted">Management of Sale Ticket</small>
+            </h3>
+
+            <h4 class="p-3">
+                Add New Sale Ticket
+            </h4>
+
+            <div class="container p-2">
+              <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="{% url 'financial:mainFinancial' %}">Main Financial</a></li>
+                  <li class="breadcrumb-item"><a href="{% url 'financial:mainSaleTicket' %}">Main Sale Ticket</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">Update Sale Ticket</li>
+                </ol>
+              </nav>
+            </div>
+
+            {% if messages %}
+                <div class="container">
+                <hr>
+                {% for msg in messages %}
+                <b>{{msg}}</b>
+                {% endfor %}
+                </div>
+                <hr>
+            {% endif %}
+
+            <div class="container p-3 bg-white">
+                <form method="POST" action="{% url 'financial:updateSaleTicket' saleTicket.id %}" enctype="multipart/form-data">
+                  {% csrf_token %}
+                    <div class="mb-3 row">
+                        <label for="invoice" class="col-sm-2 col-form-label">Invoice*</label>
+                        <div class="col-sm-10">
+                          <input type="text" class="form-control" id="invoice" name="invoice" value="{{saleTicket.saleTicketInvoice}}" readonly disabled>
+                        </div>
+                      </div>
+                    <div class="mb-3 row">
+                        <label for="invoice" class="col-sm-2 col-form-label">Sale Marketing Cost</label>
+                        <div class="col-sm-10">
+                          <input type="text" class="form-control" id="saleMarketingCost" name="saleMarketingCost" value="{{saleTicket.saleMarketingCost}}">
+                        </div>
+                      </div>
+                    <div class="mb-3 row">
+                        <label for="customer" class="col-sm-2 col-form-label">Customer</label>
+                        <div class="col-sm-10">
+                          <input type="text"  class="form-control" id="customer" name="customer" value="{{saleTicket.soldToCustomer}}" required>
+                        </div>
+                      </div>
+                      <div class="mb-3 row">
+                        <label for="saleDate" class="col-sm-2 col-form-label">Sale Date*</label>
+                        <div class="col">
+                          <input type="date" class="form-control" id="saleDate" name="saleDate" value="{{saleTicket.saleDate|date:'Y-m-d'}}">
+                        </div>
+                      </div>
+                      <div class="mb-3">
+                        <label for="remarks" class="form-label">Remarks</label>
+                        <textarea class="form-control" id="remarks" name='remarks' rows="3">{{saleTicket.saleComment}}</textarea>
+                      </div>
+
+                      <div class="row mb-3">
+                        <label class="mb-3">Sale Attachment</label>
+                      {% if saleTicket.saleAttachment %}
+                      <embed src="{{MEDIA_URL}}{{saleTicket.saleAttachment}}" width="500" height="720" type="application/pdf">
+                      {% else %}
+                      <div class="alert alert-warning px-3" role="alert">
+                        No file is attached
+                      </div>
+                      {% endif %}
+                      </div>
+                      <div class="mb-3">
+                        <label for="fileupload" class="form-label">Attachment</label>
+                        <input class="form-control" type="file" id="fileupload" name="fileupload">
+                      </div>
+
+                      
+                      <div class="col-12">
+                        <button type="submit" class="btn btn-success">Save Changes</button>
+                      </div>
+                </form>
+            </div>
+              
+          </div>
+
+          
+
+
+        </div>
+      </div>
+    
+</body>
+
+<script>
+  var i=0;
+  var headertable='';
+      // if(i==0){
+        headertable += "<thead><tr><th>No.</th>";
+          headertable += "<th>Tag ID</th>";
+          headertable += "<th>Type</th>";
+          headertable += "<th>Status</th>";
+          headertable += "<th>Status</th></tr></thead>";
+      // }
+  var count=0;
+  document.getElementById("animalSelectedCount").innerHTML = "0 animals selected";    
+
+  document.getElementById("searchTable").insertAdjacentHTML('afterbegin',headertable);
+  document.getElementById("searchButton").addEventListener('click',function(e){
+    e.preventDefault();
+    // alert("clicked");
+
+    // to clear the table content
+    // $('#searchTable tbody').empty();
+    clearTableContent();
+
+    const formData = new FormData($('#formID')[0]);
+    var searchKeyData = document.getElementById('searchKey').value;
+    // alert(searchKeyData);
+    var endpoint = "{% url 'financial:searchAnimalForSaleTicket' key=0  %}";
+    var patch = "{% url 'financial:searchAnimalForSaleTicket' key=0  %}".replace('0',searchKeyData);
+    // alert(endpoint);
+    // alert(patch);
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET',patch,true);
+    xhr.onload = () => {
+      // alert('inside');
+      var items=JSON.parse(xhr.response);
+      var item=items.resultCattle;
+      // alert(items.resultCattle.length);
+      // alert(items.resultSheep.length);
+      var contenttable='';
+      //   contenttable += "<tr><th>No.</th>";
+      // contenttable += "<th>Item ID</th>";
+      // contenttable += "<th>Description</th>";
+      // contenttable += "<th>Category</th>";
+      // contenttable += "<th>Start Price (RM)</th>";
+      
+      for(let i=0; i<items.resultCattle.length; i++){
+            
+            // contenttable += "<tbody><tr><td>" + (++count) + "</td>";
+            contenttable += "<tbody><tr><td><div class='form-check'><input onclick='onToggleCattle(\""+ items.resultCattle[i].id +"\")' onchange='animalCheck()' class='form-check-input' type='checkbox' value='"+ items.resultCattle[i].id +"' id='selectedCattleForSold"+ items.resultCattle[i].id +"'><label class='form-check-label' for='selectedCattleForSold"+ items.resultCattle[i].id +"'></label></div></td>";
+            contenttable += "<td>" + items.resultCattle[i].cattleTagID + "</td>";
+            contenttable += "<td>" + items.resultCattle[i].cattleType + "</td>";
+            contenttable += "<td>" + items.resultCattle[i].cattleStatus + "</td>";
+            contenttable += "<td>" + items.resultCattle[i].cattleStatus + "</td></tr>";
+        }
+        for(let i=0; i<items.resultSheep.length; i++){
+            
+            // contenttable += "<tr><td>" + (++count) + "</td>";
+            contenttable += "<tr><td><div class='form-check'><input onclick='onToggleSheep(\""+ items.resultSheep[i].id +"\")' onchange='animalCheck()' class='form-check-input' type='checkbox' value='"+ items.resultSheep[i].id +"' id='selectedSheepForSold"+ items.resultSheep[i].id +"'><label class='form-check-label' for='selectedSheepForSold"+ items.resultSheep[i].id +"'></label></div></td>";
+            contenttable += "<td>" + items.resultSheep[i].sheepTagID + "</td>";
+            contenttable += "<td>" + items.resultSheep[i].sheepType + "</td>";
+            contenttable += "<td>" + items.resultSheep[i].sheepStatus + "</td>";
+            contenttable += "<td>" + items.resultSheep[i].sheepStatus + "</td></tr></tbody>";
+        }
+        // document.getElementById("searchTable").remove();
+        document.getElementById("searchTable").insertAdjacentHTML("beforeend",contenttable);
+
+        
+        document.getElementById("searchTable").setAttribute('border','1');
+    };
+        
+    // xhr.send(JSON.stringify({
+    //   searchKey:searchKeyData
+    // }));
+    xhr.send();
+    // alert('outside');
+    i++;
+  });
+
+  $('#clearTable').click(function (event) {
+            event.preventDefault();
+            // $('#searchTable').html("");
+            $('#searchTable tbody').empty();
+
+        });
+
+  function clearTableContent(){
+    count=0;
+    $('#searchTable tbody').empty();
+  }
+
+  function animalCheck() {
+  // let total = document.querySelectorAll('input[type="checkbox"]:checked').length;
+  let totalCattle = document.querySelectorAll('input[type="checkbox"][name="SelectedCattle"]:checked').length;
+  let totalSheep = document.querySelectorAll('input[type="checkbox"][name="SelectedSheep"]:checked').length;
+  let total=totalCattle+totalSheep;
+  document.getElementById("animalSelectedCount").innerHTML = total + " animals selected";
+}
+
+function onToggleCattle(id){
+  if(document.getElementById("selectedCattleForSold"+id).checked){
+        document.getElementById("cattle-"+id).checked = true;
+      }
+      else{
+        document.getElementById("cattle-"+id).checked = false;
+      }
+
+      // document.getElementById("cattle-"+id).checked = true
+}
+
+function onToggleSheep(id){
+
+      if(document.getElementById("selectedSheepForSold"+id).checked){
+        document.getElementById("sheep-"+id).checked = true;
+      }
+      else{
+        document.getElementById("sheep-"+id).checked = false;
+      }
+
+
+      // document.getElementById("sheep-"+id).checked = true
+}
+
+
+</script>
+
+</html>

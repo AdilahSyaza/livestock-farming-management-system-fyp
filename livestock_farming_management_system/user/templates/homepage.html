@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homepage</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+    {% load static %}
+    <link href="{% static 'sidebars.css' %}" rel="stylesheet">
+    <style>
+        #menu a:hover,
+        #menu a.active{
+            color: white;
+            /* background:white; */
+            background: #1D271A;
+            /* border-right: 2px solid rgb(96, 122, 138); */
+            width: auto;
+        }
+        .bi {
+        vertical-align: -.125em;
+        fill: currentColor;
+      }
+
+      #sidebar{
+        background-color: #223226;
+      }
+
+      #bg-navbar,
+      #bg-navbar a{
+        background-color: #960017;
+        color: white;
+      }
+
+      #sidebar-title,
+      #sidebar-title a
+      {
+        background: #7D000F;
+        /* margin: -10px; */
+        width: 100%;
+        text-align: center;
+        word-wrap:break-word;
+        display: block;
+        white-space: normal;
+        color: white;
+      }
+      hr {
+        width: 80%; 
+        margin-right: auto;
+        margin-left: auto;
+        color: whitesmoke; 
+        height: 1px; 
+        background-color:whitesmoke; 
+      }
+
+      .carousel-item {
+        height: 500px;
+      }
+
+      .carousel-item img {
+          position: absolute;
+          object-fit:cover;
+          /* top: 0;
+          left: 0; */
+          min-height: 500px;
+          justify-content: space-around;
+      }
+    </style>
+    
+</head>
+<body>
+    {% include "sidebar.html" %}
+          <!-- content area! -->
+          <div class="col px-0">
+            <!-- Content area...
+            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Mollitia facilis enim blanditiis error magni inventore eaque sapiente vitae ipsa dicta eius quidem, facere et at minus alias quasi labore aliquid!</p>
+            <p>Lorem ipsum dolor sit.</p> -->
+
+            <!-- way 1 -->
+            <!-- <nav class="navbar sticky-top navbar-light" id="bg-navbar">
+              <div class="container-fluid">
+                <a class="navbar-brand">{% now "Y-m-d" %} Hello {{ user.email }}</a>
+              </div>
+            </nav> -->
+
+            <!-- way 2 -->
+            <!-- <nav class="navbar sticky-top navbar-light justify-content-between" id="bg-navbar">
+              <a class="navbar-brand px-3">Hello {{ user.username }}</a>  
+              <a class="navbar-brand ">{% now "Y-m-d" %}</a>
+              <a class="navbar-text px-3" style="text-decoration: none;"> {{ user.userRole }}</a>
+            </nav> -->
+            {% include "navbar.html" %}
+
+            <!-- way 3 -->
+            <!-- <nav class="navbar navbar-expand-lg sticky-top navbar-light" id="bg-navbar">
+              <a class="navbar-brand px-3">Hello {{ user.username }}</a>  
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse justify-content-between" id="navbarTogglerDemo02">
+                <a class="navbar-brand" style="margin-left: 40%;">{% now "Y-m-d" %}</a>
+                <a class="navbar-text px-3" style="text-decoration: none;"> {{ user.userRole }}</a>
+              </div>
+            </nav> -->
+
+            <a class="btn btn-primary m-3" href="{% url 'financial:dashboard' %}" role="button">Dashboard</a>
+
+            <div class="container p-3">
+              <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                  <!-- <div class="carousel-item active">
+                    <img class="d-block w-100" src="https://source.unsplash.com/random/100x80?sig=1" class="d-block w-100" alt="...">
+                  </div> -->
+                  {% for cattle in newestCattle %}
+                  <!-- {{animal.0.cattleStatus}} -->
+                    {% if forloop.first %}
+                      <div class="carousel-item active bg-secondary bg-gradient">
+                        <div class="d-flex justify-content-center">
+                          <img class="d-block w-auto" src="{{MEDIA_URL}}{{cattle.cattleAttachment}}" alt="...">
+                        </div>                       
+                      </div>
+                    {% else %}
+                    <div class="carousel-item bg-secondary bg-gradient">
+                      <div class="d-flex justify-content-center">
+                        <img class="d-block w-auto" src="{{MEDIA_URL}}{{cattle.cattleAttachment}}" alt="...">
+                      </div>                     
+                      <!-- <img class="d-block w-100" src="https://source.unsplash.com/random/100x80?sig=2" class="d-block w-100" alt="..."> -->
+                    </div>
+                    {% endif %}
+                  {% endfor %}
+                  {% for sheep in newestSheep %}
+                  <div class="carousel-item bg-secondary bg-gradient">
+                    <div class="d-flex justify-content-center bg">
+                      <img class="d-block w-auto" src="{{MEDIA_URL}}{{sheep.sheepAttachment}}" alt="...">
+                    </div>         
+                  </div>
+                  {% endfor %}
+                  <!-- <div class="carousel-item">
+                    <img class="d-block w-100" src="https://source.unsplash.com/random/100x80?sig=3" class="d-block w-100" alt="...">
+                  </div> -->
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Next</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="container p-3">
+              <div class="container">
+                <div class="row">
+                  <div class="col">
+                    <div class="card" style="width: auto;">
+                      <img src="https://img.freepik.com/free-vector/male-hand-holding-folder-with-documents-flat-vector-illustration-businessman-holding-red-file-important-business-real-estate-documents-stationery-application-meeting-concept_74855-24910.jpg?size=626&ext=jpg" class="card-img-top img-thumbnail" alt="...">
+                      <div class="card-body">
+                        <h5 class="card-title">Animal</h5>
+                        <p class="card-text">Animal records consisting of cattle and sheep can be managed through Animal feature.</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="card" style="width: auto;">
+                      <img src="https://img.freepik.com/investor-with-laptop-monitoring-growth-dividends-trader-sitting-stack-money-investing-capital-analyzing-profit-graphs-vector-illustration-finance-stock-trading-investment_74855-8432.jpg?size=626&ext=jpg" class="card-img-top img-thumbnail" alt="...">
+                      <div class="card-body">
+                        <h5 class="card-title">Financial</h5>
+                        <p class="card-text">The farm's financial of sales, expense and income can be recorded and tracked through Financial feature.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <br/><br/>
+                <div class="row">
+                  <div class="col">
+                    <div class="card" style="width: auto;">
+                      <img src="https://img.freepik.com/free-vector/farm-garden-machinery-set_1284-24992.jpg?size=626&ext=jpg" class="card-img-top" alt="...">
+                      <div class="card-body">
+                        <h5 class="card-title">Equipment</h5>
+                        <p class="card-text">All staff can update the equipment record management.</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="card" style="width: auto;">
+                      <img src="https://img.freepik.com/free-vector/hand-drawn-business-planning_52683-76248.jpg?size=626&ext=jpg" class="card-img-top" alt="...">
+                      <!-- add-tasks-concept-illustration_114360-4905 -->
+                      <div class="card-body">
+                        <h5 class="card-title">Task</h5>
+                        <p class="card-text">Staff leader and owner allow to create and assign tasks to their staff.</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="card" style="width: auto;">
+                      <img src="https://img.freepik.com/free-vector/people-icon-collection_1408-10.jpg?size=626&ext=jpg" class="card-img-top" alt="...">
+                      <div class="card-body">
+                        <h5 class="card-title">Staff</h5>
+                        <p class="card-text">Only owner can manage the user account of his staff for the creation or deactivation of account.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div> 
+              
+            </div>
+            
+          </div>
+
+
+        </div>
+      </div>
+    
+</body>
+</html>

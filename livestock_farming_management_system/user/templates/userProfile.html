@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    {% load static %}
+    <link href="{% static 'sidebars.css' %}" rel="stylesheet">
+    <style>
+        #menu a:hover,
+        #menu a.active{
+            color: white;
+            /* background:white; */
+            background: #1D271A;
+            /* border-right: 2px solid rgb(96, 122, 138); */
+            width: auto;
+        }
+        .bi {
+        vertical-align: -.125em;
+        fill: currentColor;
+      }
+
+      #sidebar{
+        background-color: #223226;
+      }
+
+      #bg-navbar,
+      #bg-navbar a{
+        background-color: #960017;
+        color: white;
+      }
+
+      #sidebar-title,
+      #sidebar-title a
+      {
+        background: #7D000F;
+        /* margin: -10px; */
+        width: 100%;
+        text-align: center;
+        word-wrap:break-word;
+        display: block;
+        white-space: normal;
+        color: white;
+      }
+      hr {
+        width: 80%; 
+        margin-right: auto;
+        margin-left: auto;
+        color: whitesmoke; 
+        height: 1px; 
+        background-color:whitesmoke; 
+      }
+    </style>
+    
+</head>
+<body>
+          <!-- content area! -->
+          <div class="col px-0 p-5 bg-light">
+            <!-- Content area...
+            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Mollitia facilis enim blanditiis error magni inventore eaque sapiente vitae ipsa dicta eius quidem, facere et at minus alias quasi labore aliquid!</p>
+            <p>Lorem ipsum dolor sit.</p> -->
+
+            <!-- <nav class="navbar static-top navbar-light" id="bg-navbar"> -->
+            <!-- <nav class="navbar static-top navbar-light bg-light"> -->
+              <!-- <div class="container-fluid">
+                <a class="navbar-brand" href="#">{% now "Y-m-d" %} Hello {{ user.email }}</a>
+              </div>
+            </nav> -->
+
+            <div class="container">
+                <div class="row flex-lg-nowrap">
+                  <div class="col-12 col-lg-auto mb-3" style="width: 200px;">
+                    <div class="card p-3">
+                      <div class="e-navlist e-navlist--active-bg">
+                        <ul class="nav">
+                          <li class="nav-item"><a class="nav-link px-2 active" href="{% url 'user:home' %}"><i class="fa fa-fw fa-bar-chart mr-1"></i><span>Homepage</span></a></li>
+
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                
+                  <div class="col">
+                    <div class="row">
+                      <div class="col mb-3">
+                        <div class="card">
+                          <div class="card-body">
+                            <div class="e-profile">
+                              <div class="row">
+                                <div class="col-12 col-sm-auto mb-3">
+                                  <div class="mx-auto" style="width: 140px;">
+                                    <div class="d-flex justify-content-center align-items-center rounded" style="height: 140px; background-color: rgb(233, 236, 239);">
+                                      <!-- <span style="color: rgb(166, 168, 170); font: bold 8pt Arial;">140x140</span> -->
+                                      <!-- <img src="" alt="Profile Pic" id="imgSrc" style="width:140px;height:140px"> -->
+                                      {% if user.media == null or user.media == '' %}
+                                        <img src="{{MEDIA_URL}}default-profile-image.png" alt="Profile Pic" id="imgSrc" style="width:140px;height:140px">
+                                    {% else %}
+                                        <!-- <img src="https://github.com/mdo.png"  alt="Profile Pic" id="imgSrc" style="width:140px;height:140px"> -->
+                                        <img src="{{MEDIA_URL}}{{user.media}}" alt="Profile Pic" id="imgSrc" style="width:140px;height:140px">
+                                    {% endif %}
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col d-flex flex-column flex-sm-row justify-content-between mb-3">
+                                  <div class="text-center text-sm-left mb-2 mb-sm-0">
+                                    <h4 class="pt-sm-2 pb-1 mb-0 text-nowrap" id="fullname">{{user.firstName}}</h4>
+                                    <p class="mb-0" id="username">{{user.username}}</p>
+                                    <div class="mt-2">
+                                      <form action="" method='post' id='pictureForm' enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                      <input type="file" id="imgupload" name="imgupload" style="display:none" value="{{user.media}}"/> 
+                                      <button class="btn btn-primary" type="button" id='OpenImgUpload'>
+                                        <i class="fa fa-fw fa-camera"></i>
+                                        <span>Change Photo</span>
+                                      </button>
+                                      <input type="submit" name="uploadPicture" id="uploadPicture" value="Upload" style="display:none">
+                                      </form>
+                                    
+                                    </div>
+                                  </div>
+                                  <div class="text-center text-sm-right">
+                                    <!-- <span class="badge badge-secondary"><?php echo $_SESSION['LEVEL'] ?></span> -->
+                                    <p>{{user.userRole}}</p>
+                                    <div class="text-muted"><small id="joinedYear">{{user.dateJoined}}</small></div>
+                                  </div>
+                                </div>
+                              </div>
+
+                              {% if messages %}
+                                  <div class="container">
+                                  <hr>
+                                  {% for msg in messages %}
+                                  <div class="alert alert-success" role="alert">
+                                    {{msg}}
+                                  </div>
+                                  {% endfor %}
+                                  </div>
+                                  <hr>
+                              {% endif %}
+
+                              <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                  <button class="nav-link active" id="settings-tab" data-bs-toggle="tab" data-bs-target="#settings-tab-pane" type="button" role="tab" aria-controls="settings-tab-pane" aria-selected="true">Account Setting</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                  <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Profile</button>
+                                </li>
+                              </ul>
+                              <div class="tab-content" id="myTabContent">
+                                <div class="tab-pane fade show active" id="settings-tab-pane" role="tabpanel" aria-labelledby="settings-tab" tabindex="0">
+                                    <form class="form" method="post">
+                                        {% csrf_token %}
+                                        <div class="row">
+                                          <div class="col">
+                                            <div class="row">
+                                              <div class="col">
+                                                <div class="form-group">
+                                                  <label>User ID</label>
+                                                  <input class="form-control" disabled readonly type="text" id="userID" name="userID" value="{{user.id}}">
+                                                </div>
+                                              </div>
+                                              <div class="col">
+                                                <div class="form-group">
+                                                  <label>Username</label>
+                                                  <input class="form-control" type="text" id="username" name="username" value="{{user.username}}" required>
+                                                </div>
+                                              </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col">
+                                                  <div class="form-group">
+                                                    <label>Staff ID</label>
+                                                    <input class="form-control" disabled readonly type="text" id="staffID" name="staffID" value="{{user.staffID}}">
+                                                  </div>
+                                                </div>
+                                                <div class="col">
+                                                  <div class="form-group">
+                                                    <label>Staff Role</label>
+                                                    <input class="form-control" disabled readonly type="text" id="userRole" name="userRole" value="{{user.userRole}}">
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            <div class="row">
+                                              <div class="col">
+                                                <div class="form-group">
+                                                  <label>Email</label>
+                                                  <input class="form-control" type="email" id="email" name="email" value="{{user.email}}" required>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                            <div class="row">
+                                              <div class="col">
+                                                <div class="form-group">
+                                                  <label>Password</label>
+                                                  <input class="form-control" id="password" name="password" type="password" value="{{user.password}}" required>
+                                                  <input type="checkbox" onclick="showPassword()">Show Password
+                                                </div>
+                                              </div>
+                                            </div>
+                                        <div class="row">
+                                          <div class="col d-flex justify-content-end">
+                                            <!-- <button class="btn btn-primary" type="submit">Save Changes</button> -->
+                                            <input class="btn btn-success" type="submit" id="AccountInfo" name="AccountInfo" value="Save Changes" />
+                                          </div>
+                                        </div>
+                                      </form>
+                                </div>
+                                <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+                                    <form class="form" id="accountForm" method="post">
+                                        {% csrf_token %}
+                                        <div class="row">
+                                          <div class="col">
+                                            <div class="row">
+                                              <div class="col">
+                                                <div class="form-group">
+                                                  <label>First Name</label>
+                                                  <input class="form-control" type="text" id="firstName" name="firstName" value="{{user.firstName}}" required>
+                                                </div>
+                                              </div>
+                                              <div class="col">
+                                                <div class="form-group">
+                                                  <label>Last Name</label>
+                                                  <input class="form-control" type="text" id="lastName" name="lastName" value="{{user.lastName}}" required>
+                                                </div>
+                                              </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col">
+                                                  <div class="form-group">
+                                                    <label>Date of Birth</label>
+                                                    <input class="form-control" type="date" id="dateOfBirth" name="dateOfBirth" value="{{user.dateOfBirth|date:"Y-m-d" }}">
+                                                  </div>
+                                                </div>
+                                                <div class="col">
+                                                  <div class="form-group">
+                                                    <label>Gender</label>
+                                                    <select class="form-select" aria-label="Default select example" name="gender" id="gender">
+                                                        <option>Open this select menu</option>
+                                                        <option value="FEMALE">Female</option>
+                                                        <option value="MALE">Male</option>
+                                                      </select>                                                  
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            <div class="row">
+                                                <div class="col">
+                                                    <div class="form-group">
+                                                        <label>Marital Status</label>
+                                                        <select class="form-select" aria-label="Default select example" name="maritalStatus" id="maritalStatus">
+                                                            <option value="">Open this select menu</option>
+                                                            <option value="SINGLE">Single</option>
+                                                            <option value="MARRIED">Married</option>
+                                                            <option value="DIVORCED">Divorced</option>
+                                                          </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                              <div class="col">
+                                                <div class="form-group">
+                                                  <label>Address</label>
+                                                  <input class="form-control" type="text" id="address" name="address" value="{{user.address|default_if_none:''}}" required>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <div class="row mt-3">
+                                          <div class="col d-flex justify-content-end">
+                                            <!-- <button class="btn btn-primary" type="submit">Save Changes</button> -->
+                                            <input class="btn btn-success" type="submit" id="ProfileInfo" name="ProfileInfo" value="Save Changes" />
+                                          </div>
+                                        </div>
+                                      </form>
+                                </div>
+                              </div>
+                              
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                
+                      <div class="col-12 col-md-3 mb-3">
+                        <div class="card mb-3">
+                          <div class="card-body">
+                            <div class="px-xl-3">
+                              <!-- <button class="btn btn-block btn-secondary" onclick="window.location.href='../authentication/logout.php';">
+                                <i class="fa fa-sign-out"></i>
+                                <span>Logout</span>
+                              </button> -->
+                              <a class="btn btn-secondary m-3" href="{% url 'user:logout' %}" role="button">Logout</a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                
+                  </div>
+                </div>
+                </div>
+
+
+          </div>
+          <!-- above is the closed div to content area! -->
+
+          
+
+
+        </div>
+      </div>
+
+
+      <script>
+            $('select[name=maritalStatus] option[value='+"{{user.maritalStatus}}"+']').attr('selected','selected');
+            $('select[name=gender] option[value='+"{{user.gender}}"+']').attr('selected','selected');
+
+        function showPassword() {
+                   var x = document.getElementById("password");
+                   if (x.type === "password") {
+                     x.type = "text";
+                   } else {
+                     x.type = "password";
+                   }
+                 } 
+
+                 $('#OpenImgUpload').click(function(){ 
+                    $('#imgupload').trigger('click'); 
+                    $('#uploadPicture').css('display','inline-block')
+                }
+                    
+                    );
+
+                
+    </script>
+
+</body>
+</html>

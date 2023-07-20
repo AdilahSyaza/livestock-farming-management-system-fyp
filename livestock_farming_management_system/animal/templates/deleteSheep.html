@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Sheep Confirmation</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+    <style>
+        #menu a:hover,
+        #menu a.active{
+            color: white;
+            /* background:white; */
+            background: #1D271A;
+            /* border-right: 2px solid rgb(96, 122, 138); */
+            width: auto;
+        }
+        .bi {
+        vertical-align: -.125em;
+        fill: currentColor;
+      }
+
+      #sidebar{
+        background-color: #223226;
+      }
+
+      #bg-navbar,
+      #bg-navbar a{
+        background-color: #960017;
+        color: white;
+      }
+
+      #sidebar-title,
+      #sidebar-title a
+      {
+        background: #7D000F;
+        /* margin: -10px; */
+        width: 100%;
+        text-align: center;
+        word-wrap:break-word;
+        display: block;
+        white-space: normal;
+        color: white;
+      }
+      hr {
+        width: 80%; 
+        margin-right: auto;
+        margin-left: auto;
+        color: whitesmoke; 
+        height: 1px; 
+        background-color:whitesmoke; 
+      }
+    </style>
+    
+</head>
+<body>
+    {% include "sidebarAnimal.html" %}
+          <!-- content area! -->
+          <div class="col px-0 bg-light">
+
+            <!-- <nav class="navbar sticky-top navbar-light" id="bg-navbar">
+              <div class="container-fluid">
+                <a class="navbar-brand" href="#">{% now "Y-m-d" %} Hello {{ user.email }}</a>
+              </div>
+            </nav> -->
+            {% include "navbar.html" %}
+
+            <h3 class="p-3 bg-white">
+                ANIMAL <br>
+                <small class="text-muted">Management of Animal</small>
+            </h3>
+
+            <h4 class="p-3">
+                Delete Animal
+            </h4>
+            <div class="container p-2">
+              <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="{% url 'animal:mainAnimal' %}">Main Animal</a></li>
+                  <li class="breadcrumb-item"><a href="{% url 'animal:mainSheep' %}">Main Sheep</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">Delete Sheep</li>
+                </ol>
+              </nav>
+            </div>
+
+            {% if messages %}
+                <div class="container">
+                <hr>
+                {% for msg in messages %}
+                <b>{{msg}}</b>
+                {% endfor %}
+                </div>
+                <hr>
+            {% endif %}
+
+            <div class="container p-3 bg-white">
+              <form method="POST" action="{% url 'animal:deleteSheep' sheep.id %}">
+                {% csrf_token %}
+                <div class="row mb-3">
+                  <label for="tagID" class="col-sm-2 col-form-label">Tag ID</label>
+                  <div class="col">
+                    <input type="text" class="form-control bg-white" id="tagID" value="{{sheep.sheepTagID}}" style="text-overflow: ellipsis;white-space:nowrap;overflow:hidden;" readonly disabled>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label for="tagPositon" class="col-sm-2 col-form-label">Tag Position</label>
+                  <div class="col">
+                    <input type="text" class="form-control bg-white" id="tagPositon" value="{{sheep.sheepTagPosition}}" style="text-overflow: ellipsis;white-space:nowrap;overflow:hidden;" readonly disabled>
+                  </div>
+                </div>
+                <div for="sheepType" class="row mb-3">
+                  <label class="col-sm-2 col-form-label">sheep Type</label>
+                  <div class="col">
+                    <input type="text" class="form-control bg-white" id="sheepType" value="{{sheep.sheepType}}" style="text-overflow: ellipsis;white-space:nowrap;overflow:hidden;" readonly disabled>
+                  </div>
+                </div>
+                <div for="status" class="row mb-3">
+                  <label class="col-sm-2 col-form-label">Status</label>
+                  <div class="col">
+                    <input type="text" class="form-control bg-white" id="status" value="{{sheep.sheepStatus}}" style="text-overflow: ellipsis;white-space:nowrap;overflow:hidden;" readonly disabled>
+                  </div>
+                </div>
+                <div for="hornStatus" class="row mb-3">
+                  <label class="col-sm-2 col-form-label">Horn Status</label>
+                  <div class="col">
+                    <input type="text" class="form-control bg-white" id="hornStatus" value="{{sheep.sheepHornStatus}}" style="text-overflow: ellipsis;white-space:nowrap;overflow:hidden;" readonly disabled>
+                  </div>
+                </div>
+                <div for="breed" class="row mb-3">
+                  <label class="col-sm-2 col-form-label">Breed</label>
+                  <div class="col">
+                    <input type="text" class="form-control bg-white" id="breed" value="{{sheep.sheepBreed}}" style="text-overflow: ellipsis;white-space:nowrap;overflow:hidden;" readonly disabled>
+                  </div>
+                </div>
+                <div for="comment" class="row mb-3">
+                  <label class="col-sm-2 col-form-label">Comment</label>
+                  <div class="col">
+                    <input type="text" class="form-control bg-white" id="comment" value="{{sheep.sheepComment}}" style="text-overflow: ellipsis;white-space:nowrap;overflow:hidden;" readonly disabled>
+                  </div>
+                </div>
+                <div for="dateRecorded" class="row mb-3">
+                  <label class="col-sm-2 col-form-label">Date Recorded</label>
+                  <div class="col">
+                    <input type="text" class="form-control bg-white" id="dateRecorded" value="{{sheep.sheepDateRecorded}}" style="text-overflow: ellipsis;white-space:nowrap;overflow:hidden;" readonly disabled>
+                  </div>
+                  <label for="lastUpdatedBy" class="col-sm-2 col-form-label">Last updated by</label>
+                  <div class="col">
+                    <input type="text" class="form-control bg-white" id="lastUpdatedBy" value="{{sheep.sheepLastUpdatedBy.staffID}}" style="text-overflow: ellipsis;white-space:nowrap;overflow:hidden;" readonly disabled>
+                  </div>
+                </div>
+                <div for="raisedOrPurchased" class="row mb-3">
+                  <label class="col-sm-2 col-form-label">Raised or Purchased</label>
+                  <div class="col">
+                    <input type="text" class="form-control bg-white" id="raisedOrPurchased" value="{{sheep.sheepRaisedOrPurchased}}" style="text-overflow: ellipsis;white-space:nowrap;overflow:hidden;" readonly disabled>
+                  </div>
+                </div>
+                <div for="offerPrice" class="row mb-3">
+                  <label class="col-sm-2 col-form-label">Offer Price</label>
+                  <div class="col">
+                    <input type="text" class="form-control bg-white" id="offerPrice" value="{{sheep.sheepOfferPrice}}" style="text-overflow: ellipsis;white-space:nowrap;overflow:hidden;" readonly disabled>
+                  </div>
+                </div>
+                <div for="commercialNote" class="row mb-3">
+                  <label class="col-sm-2 col-form-label">Commercial Note</label>
+                  <div class="col">
+                    <input type="text" class="form-control bg-white" id="commercialNote" value="{{sheep.sheepCommercialNote}}" style="text-overflow: ellipsis;white-space:nowrap;overflow:hidden;" readonly disabled>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label class="col-sm-2 col-form-label">sheep Birth Date</label>
+                  <div class="col">
+                    <input type="text" class="form-control bg-white" id="floatingInputGroup1" value="{{sheep.sheepBirthDate|date:'Y-m-d'}}" style="text-overflow: ellipsis;white-space:nowrap;overflow:hidden;" readonly disabled>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label for="birthWeight" class="col-sm-2 col-form-label">sheep Birth Weight</label>
+                  <div class="col">
+                    <input type="text" class="form-control bg-white" id="birthWeight" value="{{sheep.sheepBirthWeight}}" style="text-overflow: ellipsis;white-space:nowrap;overflow:hidden;" readonly disabled>
+                  </div>
+                </div>
+                <div for="weaningStatus" class="row mb-3">
+                  <label class="col-sm-2 col-form-label">Weaning Status</label>
+                  <div class="col">
+                    <input type="text" class="form-control bg-white" id="weaningStatus" value="{{sheep.sheepWeaningStatus}}" style="text-overflow: ellipsis;white-space:nowrap;overflow:hidden;" readonly disabled>
+                  </div>
+                </div>
+                <div for="dam" class="mb-3 row">
+                    <label class="col-sm-2 col-form-label">Dam</label>
+                    <div class="col">
+                  <div class="col">
+                    <input type="text" class="form-control bg-white" id="dam" value="{{sheep.sheepDam.sheepTagID}}" style="text-overflow: ellipsis;white-space:nowrap;overflow:hidden;" readonly disabled>
+                  </div>
+                    </div>
+                    <label for="sire" class="col-sm-2 col-form-label">Sire</label>
+                    <div class="col">
+                        <input type="text" class="form-control bg-white" id="sire" value="{{sheep.sheepSire.sheepTagID}}" style="text-overflow: ellipsis;white-space:nowrap;overflow:hidden;" readonly disabled>
+
+                    </div>
+                  </div>
+                <div class="row mb-3">
+                  <label class="mb-3">sheep Attachment</label>
+                {% if sheep.sheepAttachment %}
+                <img src="{{MEDIA_URL}}{{sheep.sheepAttachment}}" alt="Sheep Pic" id="imgSrc" style="width:150px;height:100px;" class="img-thumbnail img_responsive_fixed_small">
+                </div>
+                {% else %}
+                <div class="alert alert-warning px-3" role="alert">
+                  No file is attached
+                </div>
+                {% endif %}
+
+                <div class="col-12">
+                  <button type="submit" class="btn btn-danger" onclick="deleteSheep(); return false;">Delete</button>
+                </div>
+                
+              </form>
+            </div>
+
+
+              
+          </div>
+          <!-- closed tag for content area! -->
+          <script>
+
+            function deleteSheep(){
+                
+              if (confirm("Press OK to confirm the deletion of sheep!")) {
+                this.form.submit();
+              }else{
+                alert("You canceled deleting this record!");
+              }
+            };
+          </script>
+</body>
+</html>

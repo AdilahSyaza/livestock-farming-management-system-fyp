@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cattle Grouping</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+    <style>
+        #menu a:hover,
+        #menu a.active{
+            color: white;
+            /* background:white; */
+            background: #1D271A;
+            /* border-right: 2px solid rgb(96, 122, 138); */
+            width: auto;
+        }
+        .bi {
+        vertical-align: -.125em;
+        fill: currentColor;
+      }
+
+      #sidebar{
+        background-color: #223226;
+      }
+
+      #bg-navbar,
+      #bg-navbar a{
+        background-color: #960017;
+        color: white;
+      }
+
+      #sidebar-title,
+      #sidebar-title a
+      {
+        background: #7D000F;
+        /* margin: -10px; */
+        width: 100%;
+        text-align: center;
+        word-wrap:break-word;
+        display: block;
+        white-space: normal;
+        color: white;
+      }
+      hr {
+        width: 80%; 
+        margin-right: auto;
+        margin-left: auto;
+        color: whitesmoke; 
+        height: 1px; 
+        background-color:whitesmoke; 
+      }
+    </style>
+    
+</head>
+<body>
+    {% include "sidebarAnimal.html" %}
+          <!-- content area! -->
+          <div class="col px-0 bg-light">
+
+            <!-- <nav class="navbar sticky-top navbar-light" id="bg-navbar">
+              <div class="container-fluid">
+                <a class="navbar-brand" href="#">{% now "Y-m-d" %} Hello {{ user.username }}</a>
+              </div>
+            </nav> -->
+            {% include "navbar.html" %}
+    
+                <h3 class="p-3 bg-white">
+                  CATTLE <br>
+                  <small class="text-muted">Management of Cattle</small>
+                </h3>            
+    
+                {% if messages %}
+                    <div class="container">
+                    <hr>
+                    {% for msg in messages %}
+                    <b>{{msg}}</b>
+                    {% endfor %}
+                    </div>
+                    <hr>
+                {% endif %}
+    
+                {% if messages %}
+                    <div class="container">
+                    {% for msg in messages %}
+                      {% if "addStaff" in message.tags %}
+                        <div class="alert alert-success" role="alert">
+                          {{msg}}
+                        </div>
+                      {% endif %}
+                    {% endfor %}
+                    </div>
+                    <hr>
+                {% endif %}
+    <!-- 
+                <div class="alert alert-success" role="alert">
+                  kkk
+                </div> -->
+
+                <div class="container p-2">
+                    <nav aria-label="breadcrumb">
+                      <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'animal:mainAnimal' %}">Main Animal</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'animal:mainCattle' %}">Main Cattle</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Cattle Based on Grouping</li>
+                      </ol>
+                    </nav>
+                  </div>
+
+                  <h3 class="p-3">
+                    <small class="text-muted">{{cattleGroup.cattleGroupName}}
+                    </small>
+                  </h3>      
+    
+                <div class="container bg-white">
+                  
+                    <table class="table table-striped table-hover">
+                        <thead>
+                          <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">TAG ID</th>
+                            <th scope="col">TAG POSITION</th>
+                            <th scope="col">BREED</th>
+                            <th scope="col">TYPE</th>
+                            <th scope="col">STATUS</th>
+                            <th scope="col">ACTION</th>
+                          </tr>
+                        </thead>
+                        <tbody class="table-group-divider">
+                          {% for cattle in cattleGrouping %}
+                          <tr>
+                            <th scope="row">{{ forloop.counter }}</th>
+                            <td>{{cattle.c_cattleID.cattleTagID}}</td>
+                            <td>{{cattle.c_cattleID.cattleTagPosition}}</td>
+                            <td>{{cattle.c_cattleID.cattleBreed}}</td>
+                            <td>{{cattle.c_cattleID.cattleType}}</td>
+                            <td>{{cattle.c_cattleID.cattleStatus}}</td>
+                            <td>
+                              <a class="btn btn-info btn-sm" href="{% url 'animal:viewCattle' cattle.c_cattleID.id %}" role="button">View</a>
+                              <a class="btn btn-warning btn-sm" href="{% url 'animal:updateCattle' cattle.c_cattleID.id %}" role="button">Update</a>
+                              <a class="btn btn-danger btn-sm" href="{% url 'animal:deleteCattle' cattle.c_cattleID.id %}" role="button">Delete</a>
+                            </td>
+                          </tr>
+                          {% endfor %}
+                        </tbody>
+                      </table>
+
+                </div>
+              
+            
+          </div>
+          <!-- end of div content area -->
+
+
+        </div>
+      </div>
+    
+</body>
+</html>
